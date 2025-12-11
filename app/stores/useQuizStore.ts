@@ -2,10 +2,15 @@ import { defineStore } from 'pinia';
 
 import { quizApi } from '#shared/api/quiz';
 import type {
-  ApiCreateQuizPayload, ApiCreateTaskPayload,
+  ApiCreateQuizPayload,
+  ApiCreateTaskPayload,
   ApiQuizListResponse,
-  ApiQuizResponse, ApiTaskDetailResponse, ApiTaskListItemResponse,
-  ApiTaskListResponse, ApiTaskResponse, ApiUpdateTaskPayload,
+  ApiQuizResponse,
+  ApiTaskDetailResponse,
+  ApiTaskListItemResponse,
+  ApiTaskListResponse,
+  ApiTaskResponse,
+  ApiUpdateTaskPayload,
 } from '#shared/api/quiz/types';
 
 import type { ApiEmptyResponse } from 'business-modules/systemic/types';
