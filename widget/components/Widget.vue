@@ -5,7 +5,11 @@
 
     <img :src="quiz?.widgetImage" alt="Изображение баннера" class="widget__image" height="146" loading="lazy" />
 
-    <tasks-progress :completed-tasks-qty="0" :tasks-qty="quiz?.tasks.length" class="widget__progress" />
+    <tasks-progress
+      :completed-tasks-qty="quiz?.progress.completedTasks"
+      :tasks-qty="quiz?.progress.totalTasks"
+      class="widget__progress"
+    />
   </a>
 </template>
 
@@ -21,6 +25,7 @@ const FRONT_URL = 'https://gamify-platform.ru';
 
 const props = defineProps<{
   uuid: string;
+  phone: string;
 }>();
 
 const quiz = ref<ApiQuizResponse | undefined>(undefined);
@@ -46,7 +51,7 @@ const backgroundGradient = computed<CSSProperties>(() => {
   return {};
 });
 
-const link = computed<string>(() => `${FRONT_URL}/quiz/${props.uuid}`);
+const link = computed<string>(() => `${FRONT_URL}/quiz/${props.uuid}?phone=${props.phone}`);
 </script>
 
 <style lang="scss" scoped>

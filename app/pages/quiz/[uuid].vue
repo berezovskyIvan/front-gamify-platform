@@ -32,6 +32,7 @@ if (error.value) {
 }
 
 const quiz = computed<ApiQuizResponse>(() => quizStore.quiz!);
+const phoneNumber = computed<string>(() => quizStore.quiz!);
 </script>
 
 <style lang="scss" scoped>
