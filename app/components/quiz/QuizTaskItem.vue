@@ -7,7 +7,7 @@
       <div class="quiz-task-item__status-line"></div>
     </div>
 
-    <a :href class="quiz-task-item__link">
+    <nuxt-link :href="href" class="quiz-task-item__link" external>
       <div class="quiz-task-item__link-wrapper">
         <h3 class="quiz-task-item__title" v-html="task.title" />
 
@@ -15,7 +15,7 @@
       </div>
 
       <icon class="quiz-task-item__link-icon" name="icon:arrow-right" />
-    </a>
+    </nuxt-link>
   </div>
 </template>
 
