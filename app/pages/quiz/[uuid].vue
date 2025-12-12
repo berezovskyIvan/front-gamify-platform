@@ -19,7 +19,7 @@ const route = useRoute();
 const quizStore = useQuizStore();
 
 const { error } = await useAsyncData(() =>
-  quizStore.fetchQuizByUuid(String(route.params.uuid)).catch(() => {
+  quizStore.fetchQuizByUuid(String(route.params.uuid), String(route.query.phone || '')).catch(() => {
     throw createError({ statusCode: HttpStatus.NOT_FOUND });
   }),
 );
@@ -32,7 +32,6 @@ if (error.value) {
 }
 
 const quiz = computed<ApiQuizResponse>(() => quizStore.quiz!);
-const phoneNumber = computed<string>(() => quizStore.quiz!);
 </script>
 
 <style lang="scss" scoped>

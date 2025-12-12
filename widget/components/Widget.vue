@@ -31,7 +31,7 @@ const props = defineProps<{
 const quiz = ref<ApiQuizResponse | undefined>(undefined);
 
 onMounted(async () => {
-  const res = await fetch(`${FRONT_URL}/api/quiz/${props.uuid}`)
+  const res = await fetch(`${FRONT_URL}/api/quiz/${props.uuid}?phone=${props.phone}`)
     .then((r) => r.json())
     .catch(() => {
       console.error('Не получилось загрузить данные для виджета');
