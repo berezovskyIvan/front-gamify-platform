@@ -14,7 +14,7 @@ import type {
 
 export const quizApi = {
   getQuizList(): Promise<ApiQuizListResponse> {
-    return $fetch('/api/quiz/list');
+    return $fetch('/api/quiz');
   },
   getQuizByUuid(uuid: string): Promise<ApiQuizResponse> {
     return $fetch(`/api/quiz/${uuid}`);
