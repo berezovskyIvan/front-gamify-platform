@@ -7,7 +7,7 @@
       <div class="quiz-task-item__status-line"></div>
     </div>
 
-    <a :href class="quiz-task-item__link">
+    <a :href="href" class="quiz-task-item__link">
       <div class="quiz-task-item__link-wrapper">
         <h3 class="quiz-task-item__title" v-html="task.title" />
 
@@ -27,11 +27,13 @@ const props = defineProps<{
   completed?: boolean;
 }>();
 
-const href = computed<string>(() => {
+const href = ref<string>('');
+
+onMounted(() => {
   const origin = window?.parent?.location?.origin || window?.location?.origin;
 
   if (origin && props.task.url) {
-    return origin + props.task.url;
+    href.value = origin + props.task.url;
   }
 
   return '';
