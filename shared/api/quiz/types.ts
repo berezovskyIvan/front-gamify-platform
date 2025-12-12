@@ -34,7 +34,7 @@ export interface ApiCreateQuizPayload {
   bannerBgColor: string; // HEX
   description: string;
   image: string; // base64
-  imageSmall: string; // base64
+  widgetImage: string; // base64
   shortDescription: string;
   title: string;
 }

@@ -7,7 +7,7 @@
 <script lang="ts" setup>
 defineProps<{
   href?: string;
-  disabled?: true;
+  disabled?: boolean;
 }>();
 </script>
 

@@ -10,7 +10,7 @@ import type {
   ApiTaskListItemResponse,
   ApiTaskListResponse,
   ApiTaskResponse,
-  ApiUpdateTaskPayload,
+  ApiUpdateQuizPayload,
 } from '#shared/api/quiz/types';
 
 import type { ApiEmptyResponse } from 'business-modules/systemic/types';
@@ -43,17 +43,17 @@ export const useQuizStore = defineStore('quiz', {
         this.quizList = { total: 1, items: [response] };
       }
     },
-    // UPDATE_QUIZ(response: ApiQuizResponse): void {
-    //   if (this.quizList) {
-    //     const index = this.quizList.items.findIndex(quiz => quiz.entityId === response.entityId);
-    //     if (index >= 0) {
-    //       this.quizList.items.splice(index, 1, response);
-    //     }
-    //   }
-    // },
+    UPDATE_QUIZ(response: ApiQuizResponse): void {
+      if (this.quizList) {
+        const index = this.quizList.items.findIndex((quiz) => quiz.entityId === response.entityId);
+        if (index >= 0) {
+          this.quizList.items.splice(index, 1, response);
+        }
+      }
+    },
     DELETE_QUIZ(id: ApiQuizResponse['entityId']): void {
       if (this.quizList) {
-        const index = this.quizList.items.findIndex(quiz => quiz.entityId === id);
+        const index = this.quizList.items.findIndex((quiz) => quiz.entityId === id);
         if (index >= 0) {
           this.quizList.items.splice(index, 1);
         }
@@ -80,7 +80,7 @@ export const useQuizStore = defineStore('quiz', {
     // },
     DELETE_TASK(id: ApiTaskResponse['entityId']): void {
       if (this.taskList) {
-        const index = this.taskList.items.findIndex(task => task.entityId === id);
+        const index = this.taskList.items.findIndex((task) => task.entityId === id);
         if (index >= 0) {
           this.taskList.items.splice(index, 1);
         }
@@ -102,11 +102,11 @@ export const useQuizStore = defineStore('quiz', {
       this.ADD_QUIZ_TO_LIST(res);
       return res;
     },
-    // async updateQuiz(payload: ApiCreateQuizPayload): Promise<ApiQuizResponse> {
-    //   const res = await quizApi.updateQuiz(payload);
-    //   this.UPDATE_QUIZ(res);
-    //   return res;
-    // },
+    async updateQuiz(id: ApiQuizResponse['entityId'], payload: ApiUpdateQuizPayload): Promise<ApiQuizResponse> {
+      const res = await quizApi.updateQuiz(id, payload);
+      this.UPDATE_QUIZ(res);
+      return res;
+    },
     deleteQuiz(id: ApiQuizResponse['entityId']): Promise<ApiEmptyResponse> {
       const res = quizApi.deleteQuiz(id);
       this.DELETE_QUIZ(id);

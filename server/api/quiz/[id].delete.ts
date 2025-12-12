@@ -1,14 +1,13 @@
-import type { ApiCreateQuizPayload, ApiQuizResponse } from '#shared/api/quiz/types';
-
 import { HttpStatus } from 'business-modules/systemic/enums';
+import type { ApiEmptyResponse } from 'business-modules/systemic/types';
 
 import { $apiBaseInternal } from '../../utils/api';
 
 export default defineEventHandler(async (event) => {
   try {
-    const body = await readBody<ApiCreateQuizPayload>(event);
+    const id = getRouterParam(event, 'id');
 
-    return await $apiBaseInternal<ApiQuizResponse>('/v1/quiz', { method: 'POST', body });
+    return await $apiBaseInternal<ApiEmptyResponse>(`/v1/quiz/${id}`, { method: 'DELETE' });
   } catch {
     throw createError({
       statusCode: HttpStatus.INTERNAL_SERVER_ERROR,

@@ -1,39 +1,34 @@
 <template>
   <div class="arm">
     <h1 class="arm__title">АРМ сотрудника</h1>
-    <ui-button
-      v-if="!isOpenForm"
-      class="arm__quiz-create-btn"
-      @click="openCreateQuizForm"
-    >
-      Создать викторину
-    </ui-button>
+    <ui-button v-if="!isOpenForm" class="arm__quiz-create-btn" @click="openCreateQuizForm">Создать викторину</ui-button>
     <template v-if="showQuizList">
       <quiz-card
-        v-for="(quiz) in quizList.items"
+        v-for="quiz in quizList.items"
         :key="quiz.entityId"
         :quiz
+        @click:change="() => handleChangeQuiz(quiz)"
       />
     </template>
 
-    <quiz-form v-else />
+    <quiz-form v-else-if="isOpenForm" :quiz="selectedQuiz" @close-form="isOpenForm = false" />
   </div>
 </template>
 
-<script setup lang="ts">
-import type { ApiQuizListResponse } from '#shared/api/quiz/types';
+<script lang="ts" setup>
+import type { ApiQuizListResponse, ApiQuizResponse } from '#shared/api/quiz/types';
 
 import { HttpStatus } from 'business-modules/systemic/enums';
 
 const quizStore = useQuizStore();
 
 const isOpenForm = ref<boolean>(false);
+const selectedQuiz = ref<ApiQuizResponse | undefined>(undefined);
 
 const { error } = await useAsyncData(() =>
-    quizStore.fetchQuizList()
-        .catch(() => {
-      throw createError({ statusCode: HttpStatus.NOT_FOUND });
-    }),
+  quizStore.fetchQuizList().catch(() => {
+    throw createError({ statusCode: HttpStatus.NOT_FOUND });
+  }),
 );
 
 if (error.value) {
@@ -51,9 +46,14 @@ const showQuizList = computed<boolean>(() => {
 const openCreateQuizForm = () => {
   isOpenForm.value = true;
 };
+
+const handleChangeQuiz = (quiz: ApiQuizResponse) => {
+  selectedQuiz.value = quiz;
+  isOpenForm.value = true;
+};
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .arm {
   display: flex;
   flex-direction: column;
@@ -66,6 +66,7 @@ const openCreateQuizForm = () => {
   padding-right: 16px;
   width: 832px;
   margin-top: 20px;
+  gap: 8px;
 
   &__title {
     margin-bottom: 20px;
