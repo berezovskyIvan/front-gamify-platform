@@ -1,5 +1,9 @@
 <template>
   <div class="quiz-card">
+    <div class="quiz-card__actions">
+      <ui-button class="quiz-card__delete" @click="onDelete">Удалить</ui-button>
+      <ui-button class="quiz-card__change" @click="onChange">Изменить</ui-button>
+    </div>
     <div class="quiz-card__row">
       <span class="quiz-card__label">Заголовок:</span>
       <span class="quiz-card__value">{{ quiz.title }}</span>
@@ -27,28 +31,43 @@
 
     <div class="quiz-card__row">
       <span class="quiz-card__label">Основное изображение:</span>
-      <img :src="quiz.image" :alt="quiz.title" class="quiz-card__img" />
+      <img :alt="quiz.title" :src="quiz.image" class="quiz-card__img" />
     </div>
 
     <div class="quiz-card__row">
       <span class="quiz-card__label">Изображение баннера:</span>
-      <img :src="quiz.widgetImage" :alt="quiz.title" class="quiz-card__img" />
+      <img :alt="quiz.title" :src="quiz.widgetImage" class="quiz-card__img" />
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { ApiQuizListItemResponse } from '#shared/api/quiz/types';
 
-defineProps<{
+const props = defineProps<{
   quiz: ApiQuizListItemResponse;
+}>();
+
+const quizStore = useQuizStore();
+
+async function onDelete() {
+  await quizStore.deleteQuiz(props.quiz.entityId);
+}
+
+function onChange() {
+  emit('click:change');
+}
+
+const emit = defineEmits<{
+  (event: 'click:change'): void;
 }>();
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 $img-size: 96px;
 
 .quiz-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: left;
@@ -56,6 +75,17 @@ $img-size: 96px;
   padding: 12px;
   border-radius: 12px;
   width: 100%;
+
+  &__actions {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+  }
 
   &__row {
     display: flex;
@@ -79,6 +109,10 @@ $img-size: 96px;
   &__img {
     max-width: $img-size;
     max-height: $img-size;
+  }
+
+  &__delete {
+    background-color: red;
   }
 }
 </style>
