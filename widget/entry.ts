@@ -35,8 +35,4 @@ function mountWidget() {
   app.mount(el);
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', mountWidget);
-} else {
-  mountWidget();
-}
+mountWidget();

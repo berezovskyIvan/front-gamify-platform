@@ -9,7 +9,6 @@ import type {
   ApiTaskListResponse,
   ApiTaskResponse,
   ApiUpdateQuizPayload,
-  ApiUpdateTaskPayload,
 } from './types';
 
 export const quizApi = {
@@ -22,9 +21,9 @@ export const quizApi = {
   createQuiz(payload: ApiCreateQuizPayload): Promise<ApiQuizResponse> {
     return $fetch('/api/quiz', { method: 'POST', body: payload });
   },
-  // updateQuiz(payload: ApiUpdateQuizPayload): Promise<ApiQuizResponse> {
-  //   return $fetch('/api/quiz', { method: 'PATCH', body: payload });
-  // },
+  updateQuiz(id: ApiQuizResponse['entityId'], payload: ApiUpdateQuizPayload): Promise<ApiQuizResponse> {
+    return $fetch(`/api/quiz/${id}`, { method: 'PATCH', body: payload });
+  },
   deleteQuiz(id: ApiQuizResponse['entityId']): Promise<ApiEmptyResponse> {
     // @ts-ignore
     return $fetch(`/api/quiz/${id}`, { method: 'DELETE' });
