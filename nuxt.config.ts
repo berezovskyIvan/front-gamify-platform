@@ -13,6 +13,7 @@ export default defineNuxtConfig({
       },
     ],
   },
+  routeRules: { '/api/**': { cors: true } },
   css: ['~/assets/styles/fonts.scss', '~/assets/styles/global.scss'],
   alias: {
     assets: fileURLToPath(new URL('./app/assets', import.meta.url)),

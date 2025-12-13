@@ -7,32 +7,58 @@ import '../app/assets/styles/global.scss';
 
 function parsePropsFromElement(el: Element) {
   let uuid: string = '';
+  let phone: string = '';
 
   if (!el) {
-    return { uuid };
+    return { uuid, phone };
   }
 
-  const data = el.getAttribute('data-uuid');
+  const dataUuid = el.getAttribute('data-uuid');
+  const dataPhone = el.getAttribute('data-phone');
 
-  if (data) {
-    uuid = data;
+  if (dataUuid && dataPhone) {
+    uuid = dataUuid;
+    phone = dataPhone;
   }
 
-  return { uuid };
+  return { uuid, phone };
 }
 
-function mountWidget() {
-  const el = document.querySelector('#tasks-widget');
-
-  if (!el) {
-    return;
-  }
-
+function mountElement(el: Element) {
   const props = parsePropsFromElement(el);
+
+  console.log('=>>>>>>>> mountWidget props', props);
 
   const app = createApp(WidgetComponent, props);
 
   app.mount(el);
+}
+
+function mountWidget() {
+  let el: Element | null = document.querySelector('#tasks-widget');
+  let interval: NodeJS.Timeout | null = null;
+  let qty = 0;
+
+  if (!el) {
+    interval = setInterval(() => {
+      el = document.querySelector('#tasks-widget');
+      console.log('=>>>>>>>>>> interval', el);
+      qty++;
+
+      if (el || qty === 10) {
+        clearInterval(interval!);
+        interval = null;
+
+        if (el) {
+          mountElement(el);
+        }
+      }
+    }, 100);
+  }
+
+  if (el) {
+    mountElement(el);
+  }
 }
 
 mountWidget();

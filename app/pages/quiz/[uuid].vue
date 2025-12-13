@@ -19,7 +19,7 @@ const route = useRoute();
 const quizStore = useQuizStore();
 
 const { error } = await useAsyncData(() =>
-  quizStore.fetchQuizByUuid(String(route.params.uuid)).catch(() => {
+  quizStore.fetchQuizByUuid(String(route.params.uuid), String(route.query.phone || '')).catch(() => {
     throw createError({ statusCode: HttpStatus.NOT_FOUND });
   }),
 );
@@ -49,7 +49,7 @@ const quiz = computed<ApiQuizResponse>(() => quizStore.quiz!);
     left: 0;
     right: 0;
     box-shadow: 0 0 24px 0 rgb(0, 0, 0, 0.16);
-    padding: $space-m $space-m $space-4xl $space-m;
+    padding: $space-m;
   }
 }
 </style>

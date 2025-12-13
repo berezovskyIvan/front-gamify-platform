@@ -7,7 +7,7 @@
       <div class="quiz-task-item__status-line"></div>
     </div>
 
-    <nuxt-link class="quiz-task-item__link" external href="#">
+    <a :href="href" class="quiz-task-item__link">
       <div class="quiz-task-item__link-wrapper">
         <h3 class="quiz-task-item__title" v-html="task.title" />
 
@@ -15,17 +15,40 @@
       </div>
 
       <icon class="quiz-task-item__link-icon" name="icon:arrow-right" />
-    </nuxt-link>
+    </a>
   </div>
 </template>
 
 <script lang="ts" setup>
 import type { ApiTaskResponse } from '#shared/api/quiz/types';
 
-defineProps<{
+const props = defineProps<{
   task: ApiTaskResponse;
   completed?: boolean;
 }>();
+
+const href = ref<string>('');
+
+onMounted(() => {
+  try {
+    console.log('window.parent', window.parent);
+    console.log('window.top', window.top);
+
+    console.log('window.parent.location', window.parent.location);
+    console.log('window?.parent?.[0]', window?.parent?.[0]);
+
+    const origin =
+      window?.parent?.[0]?.location?.ancestorOrigins[0] || window?.parent?.[1]?.location?.ancestorOrigins[0];
+
+    if (origin && props.task.url) {
+      href.value = origin + props.task.url;
+    }
+  } catch (e) {
+    console.log('error', e);
+  }
+
+  return '';
+});
 </script>
 
 <style lang="scss" scoped>
