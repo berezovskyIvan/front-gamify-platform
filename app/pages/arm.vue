@@ -16,7 +16,7 @@
       v-else-if="isOpenForm"
       :quiz="selectedQuiz"
       :tasks="getTasksByQuizId(selectedQuiz?.entityId)"
-      @close-form="isOpenForm = false" 
+      @close-form="isOpenForm = false"
     />
   </div>
 </template>
@@ -55,6 +55,7 @@ const showQuizList = computed<boolean>(() => {
 
 const openCreateQuizForm = () => {
   isOpenForm.value = true;
+  selectedQuiz.value = undefined;
 };
 
 const handleChangeQuiz = (quiz: ApiQuizListItemResponse) => {

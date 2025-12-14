@@ -37,13 +37,13 @@
           Удалить
         </ui-button>
       </div>
-
-      <ui-button class="quiz-form__btn" @click="addTask">Добавить задание</ui-button>
     </template>
-    
+
+    <ui-button class="quiz-form__btn quiz-form__btn_gray" @click="addTask">Добавить задание</ui-button>
+
     <div class="quiz-form__actions">
       <ui-button type="submit" class="quiz-form__btn quiz-form__btn" :disabled="isLoading" @click="onSubmit">{{ btnText }}</ui-button>
-      <ui-button class="quiz-form__btn quiz-form__btn_danger" :disabled="isLoading" @click="$emit('close-form')">Вернуться</ui-button>
+      <ui-button class="quiz-form__btn quiz-form__btn_gray" :disabled="isLoading" @click="$emit('close-form')">Вернуться</ui-button>
     </div>
 
     <span v-if="error" class="quiz-form__error">
@@ -108,8 +108,25 @@ async function onSubmit() {
         ? quizStore.updateQuiz(props.quiz?.entityId || 0, form.value)
         : quizStore.createQuiz(form.value);
 
-      const taskPromises = getTaskPromises();
-      await Promise.all([method, ...taskPromises]).then(() => {});
+      const res = await method;
+
+      if (tasksForm.value && tasksForm.value?.some(task => !task.quizId)) {
+        tasksForm.value = tasksForm.value.map(task => {
+          if (!task.quizId) {
+            return {
+              ...task,
+              quizId: res.entityId,
+            };
+          }
+          return task;
+        });
+      }
+      
+      if (tasksForm.value) {
+        const taskPromises = getTaskPromises();
+
+        await Promise.all([...taskPromises]).then(() => {});
+      }
       
       emit('close-form');
     } else {
@@ -133,14 +150,15 @@ const getTaskPromises = () => {
         return formTask.entityId === task.entityId;
       }
     });
-    console.log('index', index);
+
     if (index === -1) {
       promises.push(quizStore.deleteTask(task.entityId));
     } else if (index !== undefined && index >= 0) {
       const formTask = tasksForm.value?.[index];
-      console.log('formTask', formTask, task);
+      console.log(formTask);
       if (formTask &&
           (formTask.url !== task.url || formTask.title !== task.title || formTask.description !== task.description)) {
+        console.log('here');
         promises.push(quizStore.updateTask(task.entityId, formTask));
       }
     }
@@ -167,11 +185,13 @@ const addTask = () => {
     title: '',
     url: '',
     quizId: props.quiz?.entityId,
-    extId: `task-00${(props?.tasks?.length || 0) + 1}`,
+    extId: `task-00${(tasksForm.value?.length || 0) + 1}`,
   };
 
   if (tasksForm.value) {
     tasksForm.value.push(task);
+  } else {
+    tasksForm.value = [task];
   }
 };
 
@@ -186,8 +206,10 @@ const emit = defineEmits<{
 
 <style lang="scss" scoped>
 .quiz-form {
-  width: 650px;
-  padding-bottom: 40px;
+  width: 720px;
+  padding: 24px;
+  background-color: $white;
+  border-radius: 15px;
 
   &__input {
     &:not(:last-child) {
@@ -222,6 +244,11 @@ const emit = defineEmits<{
 
     &_danger {
       background-color: $color--accent-danger;
+    }
+
+    &_gray {
+      background-color: $gray-800;
+      color: $black;
     }
   }
 

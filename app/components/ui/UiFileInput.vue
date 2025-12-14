@@ -131,7 +131,7 @@ const clearFile = () => {
   &__remove-btn {
     width: 76px;
     padding: 6px 12px;
-    background-color: red;
+    background-color: $color--accent-danger;
     color: white;
     border: none;
     border-radius: 6px;
@@ -146,7 +146,14 @@ const clearFile = () => {
   &__error {
     @include body-h4;
 
-    color: red;
+    color: $color--accent-danger;
+  }
+
+  :deep {
+    .ui-button {
+      background-color: $gray-800;
+      color: $black;
+    }
   }
 }
 </style>

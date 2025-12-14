@@ -90,10 +90,11 @@ $img-size: 96px;
   display: flex;
   flex-direction: column;
   justify-content: left;
-  border: 1px solid $gray-400;
-  padding: 12px;
-  border-radius: 12px;
+  padding: 24px;
   width: 100%;
+  background-color: $white;
+  border-radius: 15px;
+  transition: box-shadow .3s;
 
   &__actions {
     position: absolute;
@@ -122,7 +123,7 @@ $img-size: 96px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    max-width: 544px;
+    max-width: 460px;
   }
 
   &__img {
@@ -135,6 +136,11 @@ $img-size: 96px;
 
     &_delete {
       background-color: $color--accent-danger;
+    }
+
+    &_change {
+      background-color: $gray-800;
+      color: $black;
     }
   }
 
