@@ -2,8 +2,8 @@
 
 // import WidgetComponent from '../widget/components/Widget.vue';
 
-import '../app/assets/styles/fonts.scss';
-import '../app/assets/styles/global.scss';
+// import '../app/assets/styles/fonts.scss';
+// import '../app/assets/styles/global.scss';
 
 function parsePropsFromElement(el: Element) {
   let uuid: string = '';
