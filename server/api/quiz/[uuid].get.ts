@@ -7,7 +7,8 @@ import { $apiBaseInternal } from '../../utils/api';
 export default defineEventHandler(async (event) => {
   const uuid = getRouterParam(event, 'id');
   const query = getQuery(event);
-  const phone = query.phone as string;
+
+  const phone = encodeURIComponent(`+${(query.phone as string).trim()}`);
 
   if (!uuid) {
     throw createError({
