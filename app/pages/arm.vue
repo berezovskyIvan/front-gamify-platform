@@ -64,7 +64,7 @@ const handleChangeQuiz = (quiz: ApiQuizListItemResponse) => {
 };
 
 const getTasksByQuizId = (quizId?: ApiQuizListItemResponse['entityId']) => {
-  return taskList?.value.items?.filter(task => task.quizId === quizId).reverse();
+  return taskList?.value.items?.filter((task) => task.quizId === quizId).reverse();
 };
 </script>
 
@@ -75,7 +75,8 @@ const getTasksByQuizId = (quizId?: ApiQuizListItemResponse['entityId']) => {
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  width: 832px;
+  width: calc(100% - 16px);
+  max-width: 832px;
   margin: 20px auto 40px;
   gap: 20px;
 

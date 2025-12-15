@@ -1,10 +1,5 @@
 <template>
   <div class="quiz-card">
-    <div class="quiz-card__actions">
-      <ui-button class="quiz-card__btn quiz-card__btn_delete" @click="onDelete">Удалить</ui-button>
-      <ui-button class="quiz-card__btn quiz-card__btn_change" @click="onChange">Изменить</ui-button>
-    </div>
-
     <div class="quiz-card__row">
       <span class="quiz-card__label">Заголовок:</span>
       <span class="quiz-card__value">{{ quiz.title }}</span>
@@ -39,7 +34,7 @@
       <span class="quiz-card__label">Изображение баннера:</span>
       <img :alt="quiz.title" :src="quiz.widgetImage" class="quiz-card__img" />
     </div>
-    
+
     <div v-for="(task, index) in tasks" :key="task.quizId" class="quiz-card__task">
       <span class="quiz-card__task-number">{{ `Задание №${index + 1}` }}</span>
       <div class="quiz-card__row">
@@ -54,6 +49,11 @@
         <span class="quiz-card__label">Url:</span>
         <span class="quiz-card__value">{{ task.url }}</span>
       </div>
+    </div>
+
+    <div class="quiz-card__actions">
+      <ui-button class="quiz-card__btn quiz-card__btn_delete" @click="onDelete">Удалить</ui-button>
+      <ui-button class="quiz-card__btn quiz-card__btn_change" @click="onChange">Изменить</ui-button>
     </div>
   </div>
 </template>
@@ -94,36 +94,43 @@ $img-size: 96px;
   width: 100%;
   background-color: $white;
   border-radius: 15px;
-  transition: box-shadow .3s;
+  transition: box-shadow 0.3s;
+  gap: 8px;
+
+  @media #{$media-to-sm} {
+    padding: 16px;
+  }
 
   &__actions {
-    position: absolute;
-    right: 12px;
-    bottom: 12px;
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
     gap: 8px;
+    margin-top: 16px;
   }
 
   &__row {
     display: flex;
     align-items: center;
-    margin-bottom: 8px;
   }
 
   &__label {
-    width: 200px;
+    flex-shrink: 0;
+    width: 170px;
     margin-right: 8px;
     color: $gray-600;
+
+    @media #{$media-to-sm} {
+      width: 115px;
+      flex-shrink: 0;
+    }
   }
 
   &__value {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    max-width: 460px;
   }
 
   &__img {
